@@ -1,57 +1,127 @@
-# 📊 HC/PG SA Monthly Report System
+# 📊 HC/PG SA Monthly Report
 
-A Firebase-based reporting system with daily tracking, monthly totals, and bonus calculator integration.
+A fast, simple web app for tracking daily and monthly reports of HC/PG Sales Associates.
 
 ---
 
 ## 🚀 Features
 
-- 📅 Daily entry per store
-- ✏️ Edit existing records
-- 📊 Auto monthly totals computation
-- 📦 Grouped monthly summary with subtotal per month
-- 💰 Bonus calculator modal (embedded)
-- 📱 Mobile-friendly PWA
-- 🔄 Real-time Firestore sync
+- ✅ No login required (instant access)
+- ✅ Enter name, store, and rest day once
+- ✅ Daily report table acts as live editor
+- ✅ Add, edit, and delete entries before saving
+- ✅ Firestore database sync
+- ✅ Monthly totals auto-computed
+- ✅ Bonus calculator (built-in modal)
+- ✅ Installable as a mobile app (PWA)
+- ✅ Works offline (cached)
 
 ---
 
-## 🧠 Key Fixes Included
+## 🧠 How It Works
 
-- Fixed monthly totals not loading
-- Fixed Firestore listener issues
-- Fixed edit/update inconsistencies
-- Stabilized recomputation logic
-- Prevented UI breaking from undefined values
+1. Enter:
+   - Name
+   - Store
+   - Rest day
+
+2. Add entries:
+   - Fill form
+   - Click **Add Entry**
+
+3. Daily Table:
+   - Shows saved + unsaved entries
+   - Unsaved entries highlighted
+   - Editable before saving
+
+4. Save:
+   - Click **Save All**
+   - Data goes to Firestore
+   - Monthly totals auto-update
+
+---
+
+## 📅 Daily Report = Working Area
+
+- Acts as:
+  - Preview
+  - Editor
+  - Data viewer
+
+- Actions:
+  - ✏️ Edit saved entries
+  - 🧹 Delete unsaved entries
+  - 🟢 Green rows = not yet saved
+
+---
+
+## 📊 Monthly Totals
+
+- Auto-calculated per:
+  - Month
+  - Store
+
+- Updates instantly after saving
 
 ---
 
 ## 💰 Bonus Calculator
 
-Integrated via modal:
-- Opens inside app (no tab switching)
-- Uses external system:
-  https://yuilovemiyu.github.io/Bonus-Calculator/
+Accessible via:
+> "💰 Open Bonus Calculator"
+
+- Opens inside modal
+- No page reload
 
 ---
 
-## 📦 Installation
+## 📦 Tech Stack
 
-1. Upload files to hosting (Firebase Hosting recommended)
-2. Include:
-   - index.html
-   - app.js
-   - manifest.json
-   - sw.js (optional PWA)
-   - /icons/
+- HTML / CSS / JavaScript
+- Firebase Firestore
+- Progressive Web App (PWA)
+- Service Worker (Offline Support)
 
 ---
 
-## 🔥 Firebase Setup
+## ⚠️ Notes
 
-```js
-const firebaseConfig = {
-  apiKey: "...",
-  authDomain: "...",
-  projectId: "..."
-};
+- No authentication system
+- Designed for internal/team use
+- Anyone can edit data
+
+---
+
+## 🔧 Future Improvements (Optional)
+
+- 🔒 Admin PIN protection
+- 📅 Prevent duplicate entries per store/day
+- 📱 Auto-save locally (offline-first)
+- 🏆 Store ranking system
+- 🚫 Rest day entry blocking
+
+---
+
+## 📲 Installation (Mobile)
+
+1. Open in browser
+2. Tap **Add to Home Screen**
+3. Use like a native app
+
+---
+
+## 👨‍💻 Developer Notes
+
+- Cache version: `hcpg-report-v3`
+- Update cache name when pushing new changes
+- Firestore collections:
+  - `reports`
+  - `monthly_totals`
+
+---
+
+## ✅ Status
+
+✔ Stable  
+✔ Optimized for speed  
+✔ Ready for team use  
