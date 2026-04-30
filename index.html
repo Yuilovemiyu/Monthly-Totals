@@ -235,63 +235,70 @@ async function saveAllToday(){
 
   alert("✅ Saved!");
 }
-  
-     
-// MONTHLY
-async function recomputeMonthly(){
-  const snap = await db.collection("reports").get();
-  const map = {};
 
-  snap.forEach(doc=>{
-    const d = doc.data();
-    const m = d.date?.slice(0,7);
-    if(!m) return;
-
-    const key = m+"_"+d.store;
-
-    if(!map[key]){
-      map[key] = {month:m,store:d.store,total:0,signed:0,rejected:0,cancelled:0};
-    }
-
-    map[key].total += +d.total;
-    map[key].signed += +d.signed;
-    map[key].rejected += +d.rejected;
-    map[key].cancelled += +d.cancelled;
-  });
-
-  const batch = db.batch();
-
-  Object.values(map).forEach(t=>{
-    batch.set(db.collection("monthly_totals").doc(t.month+"_"+t.store), t);
-  });
-
-  await batch.commit();
-}
-
-// LOAD MONTHLY
 function loadMonthlyTotals(){
-  db.collection("monthly_totals").onSnapshot(snapshot=>{
 
-    monthlyTotals.innerHTML = `
-    <tr>
-      <th>Month</th><th>Store</th>
-      <th>Total</th><th>Signed</th>
-      <th>Rejected</th><th>Cancelled</th>
-    </tr>`;
+  db.collection("monthly_totals")
+    .onSnapshot(snapshot=>{
 
-    snapshot.forEach(doc=>{
-      const d = doc.data();
-      monthlyTotals.innerHTML += `
-      <tr>
-        <td>${d.month}</td>
-        <td>${d.store}</td>
-        <td>${d.total}</td>
-        <td>${d.signed}</td>
-        <td>${d.rejected}</td>
-        <td>${d.cancelled}</td>
-      </tr>`;
+      monthlyTotals.innerHTML = `
+        <tr>
+          <th>Month</th><th>Store</th>
+          <th>Total</th><th>Signed</th>
+          <th>Rejected</th><th>Cancelled</th>
+        </tr>
+      `;
+
+      if(snapshot.empty){
+        monthlyTotals.innerHTML += `<tr><td colspan="6">No data</td></tr>`;
+        return;
+      }
+
+      let grouped = {};
+
+      snapshot.forEach(doc=>{
+        const d = doc.data();
+        if(!grouped[d.month]) grouped[d.month] = [];
+        grouped[d.month].push(d);
+      });
+
+      Object.keys(grouped).sort().forEach(month=>{
+
+        let t=0,s=0,r=0,c=0;
+
+        monthlyTotals.innerHTML += `
+          <tr style="background:#ddd;font-weight:bold">
+            <td colspan="6">${month}</td>
+          </tr>
+        `;
+
+        grouped[month].forEach(d=>{
+          t+=d.total; s+=d.signed; r+=d.rejected; c+=d.cancelled;
+
+          monthlyTotals.innerHTML += `
+            <tr>
+              <td>${d.month}</td>
+              <td>${d.store}</td>
+              <td>${d.total}</td>
+              <td>${d.signed}</td>
+              <td>${d.rejected}</td>
+              <td>${d.cancelled}</td>
+            </tr>
+          `;
+        });
+
+        monthlyTotals.innerHTML += `
+          <tr style="font-weight:bold;background:#f2f2f2">
+            <td colspan="2">${month} TOTAL</td>
+            <td>${t}</td>
+            <td>${s}</td>
+            <td>${r}</td>
+            <td>${c}</td>
+          </tr>
+        `;
+      });
+
     });
-  });
 }
 
 // Daily
