@@ -415,6 +415,10 @@ async function updateEntry(){
 function openBonus(){ bonusModal.style.display="block"; }
 function closeBonus(){ bonusModal.style.display="none"; }
 
+  // ================= INIT LOAD =================
+window.onload = ()=>{
+  loadMonthlyTotals();
+};
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js')
