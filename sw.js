@@ -1,13 +1,10 @@
-const CACHE_NAME = "hcpg-report-v3"; // 🔥 updated version
-
+const CACHE_NAME = "monthly-dashboard-cache-v1";
 const urlsToCache = [
   "./",
-  "./index.html",
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js",
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"
+  "./index.html"
 ];
 
-// INSTALL
+// Install
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -15,27 +12,22 @@ self.addEventListener("install", event => {
   );
 });
 
-// ACTIVATE (clear old cache)
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
-  );
-});
-
-// FETCH (cache-first)
+// Fetch
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
+      .then(response => response || fetch(event.request))
+  );
+});
+
+// Activate (cleanup old caches)
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
+      )
+    )
   );
 });
