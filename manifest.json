@@ -1,6 +1,6 @@
 {
-  "name": "Monthly Totals",
-  "short_name": "Monthly Totals",
+  "name": "Monthly Dashboard",
+  "short_name": "Dashboard",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
